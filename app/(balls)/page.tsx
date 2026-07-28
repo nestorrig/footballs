@@ -12,7 +12,7 @@ export default function Home() {
         dpr={[1, 2]}
       >
         <color args={["#004bff"]} attach="background" />
-        <PbrEnviroment backgroundScale={10} />
+        <PbrEnviroment backgroundScale={14} />
         <PresentationControls>
           <mesh>
             <sphereGeometry args={[1, 96, 48]} />
