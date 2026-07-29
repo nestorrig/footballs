@@ -75,7 +75,7 @@ export default function Home() {
             setups
           </p>
         </div>
-        <div className="grid items-end justify-end w-full mt-2">
+        <div className="lg:grid items-end justify-end w-full mt-2">
           <p className="font-urban text-[clamp(0.65rem,1.1vw,1.3rem)] opacity-90 leading-relaxed max-w-xs lg:text-right">
             Interactive 3D experience with physics, procedural PBR shaders, and
             real-time lighting using Three.js, R3F, Rapier and GSAP
