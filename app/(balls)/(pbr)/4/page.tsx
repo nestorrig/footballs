@@ -2,82 +2,79 @@
 
 import { Canvas } from "@react-three/fiber";
 import Scene from "./Scene";
-import { useDetectGPU } from "@react-three/drei";
-import { Suspense, useSyncExternalStore } from "react";
-import { ACESFilmicToneMapping } from "three";
-
-// Helpers para detectar el montado en cliente sin usar useState/useEffect en cascada
-const emptySubscribe = () => () => {};
-const getSnapshot = () => true;
-const getServerSnapshot = () => false;
-
-function useIsMounted() {
-  return useSyncExternalStore(emptySubscribe, getSnapshot, getServerSnapshot);
-}
-
-function SceneContainer() {
-  const GPUTier = useDetectGPU();
-  const mounted = useIsMounted();
-
-  // Determinar el DPR basado en el Tier
-  const targetDpr: [number, number] = GPUTier.tier >= 2 ? [1, 2] : [1, 1];
-
-  // Evaluar si es móvil evitando acceder a window de forma impura
-  const isMobile =
-    GPUTier.isMobile ||
-    (mounted && typeof window !== "undefined" && window.innerWidth < 768);
-
-  // Posición de la cámara: 15 unidades por defecto, 20 unidades en mobile
-  const cameraPosition: [number, number, number] = [0, 0, isMobile ? 20 : 15];
-
-  return (
-    <>
-      {/* Indicador visual de GPU */}
-      {/* {mounted && (
-        <div className="fixed bottom-8 right-8 z-50 text-white bg-black/50 px-3 py-1.5 rounded-md backdrop-blur border border-white/10 font-mono text-xs select-none pointer-events-none">
-          GPU Tier: {GPUTier.tier} | DPR: {targetDpr[1]}x |{" "}
-          {isMobile ? "Mobile (Z:20)" : "Desktop (Z:15)"}
-        </div>
-      )} */}
-
-      {/* Escenario 3D Canvas */}
-      <Canvas
-        shadows
-        gl={{
-          toneMapping: ACESFilmicToneMapping, // Curva de tono profesional
-          toneMappingExposure: 1.0, // Control global de exposición
-        }}
-        camera={{ position: cameraPosition, fov: 35, near: 0.1, far: 200 }}
-        dpr={targetDpr}
-      >
-        <Suspense fallback={null}>
-          <Scene />
-        </Suspense>
-      </Canvas>
-    </>
-  );
-}
+import { useState, useRef } from "react";
 
 export default function Home() {
-  return (
-    <div className="h-screen w-screen bg-black relative">
-      <Suspense fallback={null}>
-        <SceneContainer />
-      </Suspense>
+  const [ballsCount, setBallsCount] = useState(6);
 
-      <div className="bottom-10 left-6 md:left-16 fixed z-50 pointer-events-none">
-        <h2 className="font-not text-[clamp(2rem,6vw,8rem)] leading-tight mb-2">
-          Gravity
+  // Ref para invocar el reseteo de animación directamente en Scene
+  const sceneRef = useRef<{ restartAnimation: () => void }>(null);
+
+  return (
+    <div className="h-screen w-screen bg-black select-none overflow-hidden relative">
+      <Canvas
+        camera={{ position: [0, 0, 8.5], fov: 35, near: 0.1, far: 100 }}
+        dpr={[1, 2]}
+      >
+        <Scene ref={sceneRef} ballsCount={ballsCount} />
+      </Canvas>
+
+      <div className="bottom-5 md:bottom-10 right-6 fixed z-50 w-[calc(100%-24px*2)] md:w-64 px-2 rounded-2xl text-white flex flex-row gap-8 font-urban transition-all">
+        <div className="w-full">
+          <div className="flex justify-between items-center">
+            <label
+              htmlFor="ballsCount"
+              className="text-xs uppercase tracking-wider text-white/80 font-medium"
+            >
+              Balls Count
+            </label>
+            <span className="text-sm ">{ballsCount}</span>
+          </div>
+
+          {/* Range Slider personalizado */}
+          <input
+            id="ballsCount"
+            type="range"
+            min={3}
+            max={12}
+            step={1}
+            value={ballsCount}
+            onChange={(e) => setBallsCount(Number(e.target.value))}
+            className="w-full accent-white cursor-pointer bg-white/20 h-1.5 rounded-lg appearance-none"
+          />
+        </div>
+
+        <button
+          onClick={() => sceneRef.current?.restartAnimation()}
+          className="p-2.5 text-white hover:scale-[1.05] active:scale-[0.95] rounded-xl transition-all cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="size-8"
+            viewBox="0 0 21 21"
+          >
+            <g
+              fill="none"
+              fillRule="evenodd"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3.578 6.487A8 8 0 1 1 2.5 10.5"></path>
+              <path d="M7.5 6.5h-4v-4"></path>
+            </g>
+          </svg>
+        </button>
+      </div>
+
+      <div className="bottom-24 md:bottom-10 left-6 md:left-16 fixed z-50 pointer-events-none">
+        <h2 className="font-not text-[clamp(2rem,6vw,8rem)] leading-tight mb-2 text-white">
+          Tween
         </h2>
 
-        {/* Escritorio */}
-        <p className="font-urban text-[clamp(0.8rem,1.4vw,2rem)] hidden md:block">
-          Enjoy the experience, click to push the balls
-        </p>
-
-        {/* Móvil / Táctil */}
-        <p className="font-urban text-[clamp(0.8rem,1.4vw,2rem)] block md:hidden">
-          Enjoy the experience, tap to push the balls
+        <p className="font-urban text-[clamp(0.8rem,1.4vw,2rem)] max-w-xs lg:max-w-none text-white/90">
+          No interaction required, just enjoy the motion, adjust the ball count
+          to experiment with the scene
         </p>
       </div>
     </div>

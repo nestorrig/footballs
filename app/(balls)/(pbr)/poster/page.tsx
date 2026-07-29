@@ -27,7 +27,7 @@ function SceneContainer() {
     (mounted && typeof window !== "undefined" && window.innerWidth < 768);
 
   // Posición de la cámara: 15 unidades por defecto, 25 unidades en mobile
-  const cameraPosition: [number, number, number] = [0, 0, isMobile ? 25 : 15];
+  const cameraPosition: [number, number, number] = [0, 0, isMobile ? 25 : 12];
 
   return (
     <>
@@ -60,20 +60,10 @@ export default function Home() {
         <SceneContainer />
       </Suspense>
 
-      <div className="bottom-10 left-6 md:left-16 fixed z-50 pointer-events-none">
-        <h2 className="font-not text-[clamp(2rem,6vw,8rem)] leading-tight mb-2">
-          Attractor
+      <div className="bottom-10 left-16 fixed z-50 pointer-events-none w-full">
+        <h2 className="font-not  w-full text-[clamp(2rem,7.2vw,12rem)] leading-tight mb-2">
+          Footballs in Motion
         </h2>
-
-        {/* Texto para dispositivos con Mouse / Escritorio */}
-        <p className="font-urban text-[clamp(0.8rem,1.4vw,2rem)] hidden md:block">
-          Enjoy the experience, move your mouse
-        </p>
-
-        {/* Texto para dispositivos Táctiles / Móviles */}
-        <p className="font-urban text-[clamp(0.8rem,1.4vw,2rem)] block md:hidden">
-          Enjoy the experience, touch and drag your finger
-        </p>
       </div>
     </div>
   );

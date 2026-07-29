@@ -146,7 +146,7 @@ export default function Scene() {
     <>
       <CameraControls enabled={false} ref={camera} />
       <color args={["#004bff"]} attach="background" />
-      <PbrEnviroment />
+      <PbrEnviroment backgroundScale={15} />
 
       <Physics debug={false} gravity={[0, 0, 0]}>
         <RigidBody
