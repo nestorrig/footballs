@@ -9,7 +9,6 @@ const urbanist = Urbanist({
 
 const notable = Notable({ weight: "400", variable: "--font-notable" });
 
-// Configuración de Viewport para respuesta táctil y escalado en móviles
 export const viewport: Viewport = {
   themeColor: "#004bff",
   width: "device-width",
@@ -90,9 +89,6 @@ export default function RootLayout({
       lang="en"
       className={`${notable.variable} ${urbanist.variable}  h-full antialiased`}
     >
-      <head>
-        <title>Footballs</title>
-      </head>
       <body className="min-h-full max-h-svh flex flex-col text-white">
         <header className="font-urban w-full text-sm md:text-base fixed z-50 top-4 px-4 md:top-12 md:px-12 flex flex-col lg:flex-row-reverse md:justify-between  gap-4 md:gap-8 pointer-events-none">
           <div className="text-[10px] md:text-sm">

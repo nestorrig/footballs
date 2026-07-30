@@ -17,10 +17,6 @@ import PbrEnviroment from "@/components/common/PbrEnviroment";
 
 const BALLS_COUNT = 20;
 
-/**
- * Función utilitaria fuera del componente.
- * Genera la configuración inicial una sola vez al cargar el módulo.
- */
 function generateInitialInstances(count: number): InstancedRigidBodyProps[] {
   const list: InstancedRigidBodyProps[] = [];
   for (let i = 0; i < count; i++) {
@@ -37,7 +33,6 @@ function generateInitialInstances(count: number): InstancedRigidBodyProps[] {
   return list;
 }
 
-// Instancias iniciales estáticas
 const INITIAL_INSTANCES = generateInitialInstances(BALLS_COUNT);
 
 interface PlanetaryGravityProps {
@@ -47,7 +42,6 @@ interface PlanetaryGravityProps {
 function PlanetaryGravity({ centerRef }: PlanetaryGravityProps) {
   const rigidBodiesRef = useRef<RapierRigidBody[]>(null);
 
-  // Reutilización de objetos vectoriales en memoria (sin GC overhead)
   const dir = useMemo(() => new THREE.Vector3(), []);
   const bodyPos = useMemo(() => new THREE.Vector3(), []);
   const force = useMemo(() => new THREE.Vector3(), []);
@@ -106,7 +100,6 @@ export default function Scene() {
   const planetCenter = useRef(new THREE.Vector3(0, 0, 0));
   const targetPosition = useRef(new THREE.Vector3(0, 0, 0));
 
-  // Instancias estáticas para Raycasting y cálculo de interacción
   const screenPlane = useMemo(() => new THREE.Plane(), []);
   const cameraDir = useMemo(() => new THREE.Vector3(), []);
   const intersectionPoint = useMemo(() => new THREE.Vector3(), []);
@@ -114,7 +107,6 @@ export default function Scene() {
   useFrame((state, rawDelta) => {
     const delta = Math.min(rawDelta, 0.033);
 
-    // 1. Proyección del cursor sobre el plano
     state.camera.getWorldDirection(cameraDir);
     screenPlane.setFromNormalAndCoplanarPoint(
       cameraDir.negate(),
@@ -131,12 +123,10 @@ export default function Scene() {
       targetPosition.current.copy(intersectionPoint);
     }
 
-    // 2. Interpolación suave (Lerp)
     const smoothness = 8;
     const lerpFactor = 1 - Math.exp(-smoothness * delta);
     planetCenter.current.lerp(targetPosition.current, lerpFactor);
 
-    // 3. Mover el cuerpo cinemático principal
     if (centerBodyRef.current) {
       centerBodyRef.current.setNextKinematicTranslation(planetCenter.current);
     }
@@ -173,7 +163,6 @@ export default function Scene() {
           </mesh>
         </RigidBody>
 
-        {/* Pasamos la Ref completa en lugar de `.current` */}
         <PlanetaryGravity centerRef={planetCenter} />
       </Physics>
     </>

@@ -6,12 +6,9 @@ import { PresentationControls } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useLayoutEffect } from "react";
 
-// Componente interno para acceder a los hooks de R3F
 function Scene() {
   const { size } = useThree();
 
-  // Ejemplo de cálculo proporcional al ancho de la pantalla (o viewport)
-  // Puedes ajustar la fórmula según el escalado exacto que necesites
   const factor = size.width < 768 ? 0.008 : 0.002;
   const backgroundScale = Math.max(8, size.width * factor);
   return (
@@ -63,13 +60,11 @@ export default function Home() {
             Procedural Football PBR Material
           </h2>
 
-          {/* Escritorio */}
           <p className="font-urban text-[clamp(0.85rem,1.1vw,1.4rem)] opacity-90 hidden md:block leading-relaxed">
             Click and drag to inspect the material. Explore the demos above to
             see it in action
           </p>
 
-          {/* Móvil */}
           <p className="font-urban text-[clamp(0.85rem,1.1vw,1.4rem)] opacity-90 block md:hidden leading-relaxed">
             Touch and drag to inspect. Try the demos above to see different
             setups

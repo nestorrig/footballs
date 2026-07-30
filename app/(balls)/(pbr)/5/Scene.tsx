@@ -21,7 +21,6 @@ import PbrEnviroment from "@/components/common/PbrEnviroment";
 const BALL_COUNT = 30;
 const BOX_SIZE = 10;
 
-// Paredes invisibles del contenedor
 function BoundingBox() {
   const half = BOX_SIZE / 2;
   const thickness = 0.5;

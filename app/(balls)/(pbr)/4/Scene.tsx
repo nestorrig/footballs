@@ -20,7 +20,7 @@ import FootballDepthShader from "@/components/shaders/footballDepthShader";
 gsap.registerPlugin(CustomEase);
 
 const { DEG2RAD } = THREE.MathUtils;
-const sphereGeometry = new THREE.SphereGeometry(1, 96, 48);
+const sphereGeometry = new THREE.SphereGeometry(1, 48, 24);
 
 interface SceneProps {
   ballsCount: number;
@@ -49,7 +49,6 @@ const Scene = forwardRef<{ restartAnimation: () => void }, SceneProps>(
       timeline.current?.restart();
     }, []);
 
-    // Expone la función de reseteo para que la llame la UI exterior
     useImperativeHandle(ref, () => ({
       restartAnimation: restartAnim,
     }));

@@ -7,7 +7,6 @@ import { useState, useRef } from "react";
 export default function Home() {
   const [ballsCount, setBallsCount] = useState(6);
 
-  // Ref para invocar el reseteo de animación directamente en Scene
   const sceneRef = useRef<{ restartAnimation: () => void }>(null);
 
   return (
@@ -31,7 +30,6 @@ export default function Home() {
             <span className="text-sm ">{ballsCount}</span>
           </div>
 
-          {/* Range Slider personalizado */}
           <input
             id="ballsCount"
             type="range"

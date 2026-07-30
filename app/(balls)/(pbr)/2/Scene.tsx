@@ -17,13 +17,8 @@ const SPHERE_RADIUS = 3.5;
 const BALL_RADIUS = 0.75;
 const BALLS_COUNT = 25;
 
-// --- VECTORES AUXILIARES REUTILIZABLES (Evita instanciar en cada frame) ---
 const _sphereVel = new THREE.Vector3();
 
-/**
- * Genera las instancias iniciales una sola vez cuando se evalúa el módulo.
- * Previene llamadas a Math.random() durante la fase de render.
- */
 function generateInitialInstances(count: number): InstancedRigidBodyProps[] {
   const list: InstancedRigidBodyProps[] = [];
   const maxRadius = SPHERE_RADIUS - BALL_RADIUS - 0.5;
@@ -53,7 +48,6 @@ function generateInitialInstances(count: number): InstancedRigidBodyProps[] {
   return list;
 }
 
-// Instancias iniciales estáticas
 const INITIAL_INSTANCES = generateInitialInstances(BALLS_COUNT);
 
 export default function Scene() {
@@ -73,7 +67,6 @@ export default function Scene() {
   useFrame((state, rawDelta) => {
     const delta = Math.min(rawDelta, 0.033);
 
-    // 1. Raycaster & Suavizado
     state.camera.getWorldDirection(cameraDir);
     screenPlane.setFromNormalAndCoplanarPoint(
       cameraDir.negate(),
@@ -114,14 +107,12 @@ export default function Scene() {
       sphereMeshRef.current.position.copy(sphereCenter.current);
     }
 
-    // 2. Velocidad de la esfera (Reutilizando vector sin declarar 'new')
     _sphereVel
       .subVectors(sphereCenter.current, prevSphereCenter.current)
       .divideScalar(Math.max(delta, 0.001));
 
     prevSphereCenter.current.copy(sphereCenter.current);
 
-    // 3. Confinamiento matemático
     if (rigidBodiesRef.current) {
       const maxDist = SPHERE_RADIUS - BALL_RADIUS - 0.2;
       const center = sphereCenter.current;
@@ -139,7 +130,6 @@ export default function Scene() {
         const dz = pos.z - center.z;
         const distSq = dx * dx + dy * dy + dz * dz;
 
-        // Optimización: Comparar primero distSq para evitar Math.sqrt innecesarios
         if (distSq > maxDist * maxDist) {
           const dist = Math.sqrt(distSq);
           const nx = dx / dist;
@@ -184,7 +174,6 @@ export default function Scene() {
       <color args={["#004bff"]} attach="background" />
       <PbrEnviroment />
 
-      {/* Esfera contenedora optimizada */}
       <mesh ref={sphereMeshRef} visible={true}>
         <sphereGeometry args={[SPHERE_RADIUS, 32, 32]} />
 

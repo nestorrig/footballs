@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![Footballs in Motion](./public/cover.jpg)
+
+# Footballs in Motion
+
+Interactive 3D experience built with **React Three Fiber**, featuring procedural PBR football shaders, real-time physics, and choreographed motion.
+
+**Live demo:** [footballs.nestorrig.com](https://footballs.nestorrig.com)
+
+## Overview
+
+A collection of WebGL scenes that explore the same procedural football material under different lighting, physics, and interaction setups. Each demo is a self-contained experiment — from orbital gravity and enclosed bubble physics to GSAP-driven camera motion.
+
+## Demos
+
+| Route | Name | Description |
+|-------|------|-------------|
+| `/` | **Home** | Inspect the procedural PBR material. Drag to rotate and zoom. |
+| `/1` | **Attractor** | 20 instanced balls orbiting a planetary gravity center. Move the mouse to shift the attractor. |
+| `/2` | **Bubble** | Balls trapped inside a transparent sphere. Drag to move the container. |
+| `/3` | **Gravity** | Balls inside a 3D bounding box with Rapier physics. Push them with the cursor. |
+| `/4` | **Tween** | GSAP-driven orbital animation with adjustable ball count. No interaction required. |
+| `/5` | **Gravity** | Gravity simulation triggered by click / tap. |
+| `/poster` | **Poster** | Hero composition for the project cover. |
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org) — App Router, metadata, static generation
+- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) — React renderer for Three.js
+- [@react-three/drei](https://github.com/pmndrs/drei) — helpers, controls, environment maps
+- [@react-three/rapier](https://github.com/pmndrs/react-three-rapier) — WASM physics engine
+- [Three.js](https://threejs.org) — WebGL rendering
+- [three-custom-shader-material](https://github.com/Faraz-Nodejamali/three-custom-shader-material) — custom vertex/fragment shaders on top of PBR
+- [GSAP](https://gsap.com) — timeline-based animation (Demo 4)
+- [Tailwind CSS 4](https://tailwindcss.com) — layout and typography
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run start` | Serve production build |
+| `npm run lint` | Run ESLint |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+├── layout.tsx              # Root layout, metadata, navigation
+├── (balls)/
+│   ├── page.tsx            # Home — material inspector
+│   └── (pbr)/
+│       ├── 1/              # Attractor
+│       ├── 2/              # Bubble
+│       ├── 3/              # Gravity (mouse)
+│       ├── 4/              # Tween
+│       ├── 5/              # Gravity (click)
+│       └── poster/         # Cover scene
+components/
+├── common/                 # Shared environment & lighting
+└── shaders/                # Procedural football PBR shaders
+public/
+└── cover.jpg               # OG / social preview image
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Nestor Rios Garcia** — [@nestorrig](https://x.com/nestorrig)
 
-## Deploy on Vercel
+- [Instagram](https://www.instagram.com/nestorrig/)
+- [LinkedIn](https://www.linkedin.com/in/nestorrig/)
+- [Behance](https://www.behance.net/nestorrig)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private project. All rights reserved.
